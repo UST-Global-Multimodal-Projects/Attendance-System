@@ -147,7 +147,7 @@ def draw_detections(frame, detections, palette, labels, output_transform):
             for landmark in detection.landmarks:
                 landmark = output_transform.scale(landmark)
                 cv2.circle(frame, (int(landmark[0]), int(landmark[1])), 2, (0, 255, 255), 2)
-    with open(r'temp.txt', 'w') as fp:
+    with open(r'coordinates.txt', 'w') as fp:
         for item in list:
             # write each item on a new line
             fp.write("%s\n" % item)
