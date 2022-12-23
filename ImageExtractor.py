@@ -1,5 +1,6 @@
 import cv2
 import os
+import subprocess
 
 
 
@@ -42,9 +43,9 @@ class ROISaver:
 
 
 #testing
-if __name__ == "__main__":
-    obj=ROISaver("Input_Images","/Users/aditya_gitte/Downloads/grp1.jpg","/Users/aditya_gitte/Projects/Attendance-System/coordinates.txt")
-    obj.run()
+# if __name__ == "__main__":
+#     obj=ROISaver("Input_Images","/Users/aditya_gitte/Downloads/grp1.jpg","/Users/aditya_gitte/Projects/Attendance-System/coordinates.txt")
+#     obj.run()
             
 
 
