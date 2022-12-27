@@ -171,17 +171,18 @@ class FrameProcessor:
 
         return [rois, landmarks, face_identities]
 
-def markAttendance(text):
+def markAttendance(text,confidence):
+    
     with open('Attendance.csv', 'r+') as f:
         myDataList = f.readlines()
         nameList = []
         for line in myDataList:
            entry = line.split(',')
            nameList.append(entry[0])
-        if text not in nameList:
+        if text not in nameList and confidence>80:
             now = datetime.now()
             dtString = now.strftime('%H:%M:%S')
-            f.writelines(f'\n{text},{dtString}')
+            f.writelines(f'{text},{dtString},{confidence}\n')
 
 def draw_detections(frame, frame_processor, detections, output_transform):
     size = frame.shape[:2]
@@ -189,7 +190,8 @@ def draw_detections(frame, frame_processor, detections, output_transform):
     for roi, landmarks, identity in zip(*detections):
         text = frame_processor.face_identifier.get_identity_label(identity.id)
         if identity.id != FaceIdentifier.UNKNOWN_ID:
-            text += ' %.2f%%' % (100.0 * (1 - identity.distance))
+            # text += ' %.2f%%' % (100.0 * (1 - identity.distance))
+            confidence=(100.0 * (1 - identity.distance))
 
         xmin = max(int(roi.position[0]), 0)
         ymin = max(int(roi.position[1]), 0)
@@ -205,7 +207,7 @@ def draw_detections(frame, frame_processor, detections, output_transform):
         textsize = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 1)[0]
         cv2.rectangle(frame, (xmin, ymin), (xmin + textsize[0], ymin - textsize[1]), (255, 255, 255), cv2.FILLED)
         cv2.putText(frame, text, (xmin, ymin), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 1)
-        markAttendance(text)
+        markAttendance(text,confidence)
     return frame
 
 
