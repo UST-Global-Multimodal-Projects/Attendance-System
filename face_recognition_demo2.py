@@ -179,10 +179,12 @@ def markAttendance(text,confidence):
         for line in myDataList:
            entry = line.split(',')
            nameList.append(entry[0])
-        if text not in nameList and confidence>80:
-            now = datetime.now()
-            dtString = now.strftime('%H:%M:%S')
+        now = datetime.now()
+        dtString = now.strftime('%H:%M:%S')
+        if text not in nameList:
             f.writelines(f'{text},{dtString},{confidence}\n')
+        elif text in nameList:
+            f.writelines(f'unknown,{dtString},{confidence}\n')
 
 def draw_detections(frame, frame_processor, detections, output_transform):
     size = frame.shape[:2]
