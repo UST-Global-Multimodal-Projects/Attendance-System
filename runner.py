@@ -2,6 +2,8 @@ import os
 from dotenv import load_dotenv
 import subprocess
 from ImageExtractor import ROISaver
+import os
+import glob
 
 
 load_dotenv()
@@ -13,24 +15,64 @@ face_detection_model_path=os.environ['face_detection_model_path']
 face_reidentification_model_path=os.environ['face_reidentification_model_path']
 landmark_regression_model_path=os.environ['landmark_regression_model_path']
 face_database_path=os.environ['face_database_path']
+face_gallary_crop_flag=os.environ['face_gallary_crop_flag']
+
+
+#clear the input folder so that all the cropped images from the previous execution are deleted
+# files = glob.glob(input_directory_path)
+# for f in files:
+#     os.remove(f)
+
+
+
+#crop all images in face database if the face_gallary_crop_flag is set to 1
+if face_gallary_crop_flag=="1":
+    print("[ INFO ] Cropping each image in the database to increase accuracy")
+    files = os.listdir(face_database_path)
+    counter=0
+    for file in files:
+        counter+=1
+        file_path = os.path.abspath(os.path.join(face_database_path, file))
+        cmd = f'python FaceDetector.py -i "{file_path}" -m "{face_detection_model_path}" -at ssd'
+        p=subprocess.Popen(cmd,shell=True)
+        output, error = p.communicate() 
+        print(output)
+        print(f"error= {error}")
+        print(f"====================Cropped image {counter} from the face database=====================")
+
+        #this module stores the cropped images in the face gallery
+        obj=ROISaver(face_database_path,file_path,coordinates_file_path)
+        obj.databaseCrop()
+
+        #clear the coordinates file after each use
+        with open(coordinates_file_path, 'w') as coordinates_file:
+            coordinates_file.truncate()
+
+
 
 
 
 #run face detection
+print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++face detection module++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
 cmd = f'python FaceDetector.py -i "{input_image_path}" -m "{face_detection_model_path}" -at ssd'
 p=subprocess.Popen(cmd,shell=True)
 output, error = p.communicate() 
 print(output)
 print(f"error= {error}")
-print("====================face detection module ended here=====================")
+print("----------------------------------------------------------face detection module ended here------------------------------------------------------------------")
+
+
 
 
 #run ROI extraction: saves indivisual images in the input directory. Each image in this directory acts a input to the face recognizer
+print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++Reading coordinates file++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
 obj=ROISaver(input_directory_path,input_image_path,coordinates_file_path)
 obj.run()
+print("-----------------------------------------------------------Stored insivisual images in the input directory-----------------------------------------------------")
 
 
 #run face recognizer for every image in the input directory
+print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ face recognition module $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
 files = os.listdir(input_directory_path)
 counter=0
 for file in files:
@@ -41,7 +83,13 @@ for file in files:
     output, error = p.communicate() 
     print(output)
     print(f"error= {error}")
-    print(f"====================face recognition module for img{counter} ends here=====================")
+    print(f"#################################################### face recognition module for img{counter} ends here ################################################")
+
+
+#clear the coordinates file for next use
+print("--------------------------------------------------------Clearing the coordinates files --------------------------------------------------")
+with open(coordinates_file_path, 'w') as coordinates_file:
+    coordinates_file.truncate()
 
 
 
