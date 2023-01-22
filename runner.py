@@ -101,3 +101,4 @@ with open(coordinates_file_path, 'w') as coordinates_file:
 # print(input_directory_path)
 # print(face_detection_model_path)
 
+
