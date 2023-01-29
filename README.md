@@ -1,8 +1,18 @@
 # Instructions to use 
 
 ## General workflow
+- Clone the repository using 
+```
+git clone https://github.com/aditya-gitte/Attendance-System.git
+```
+- setup a new python virtual environment so that the dependencies are not installed globally. you can use Conda, pyenv ,etc
 
-- The runner script takes parameters from the .env file to make the process simpler for the user
+- Install the requirements.py file in the newly created python virtual environment by running 
+```
+pip install -r 'requirements.py'
+```
+
+- The runner script "runner.py" has to be executed to use the applicaton. The script takes parameters from the .env file to make the process simpler for the user
 - The Env file has the following parameters
     - input_image_path
     - input_directory_path
