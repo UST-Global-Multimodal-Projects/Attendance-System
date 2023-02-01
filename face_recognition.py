@@ -182,8 +182,10 @@ def markAttendance(text,confidence=1):
            nameList.append(entry[0])
         now = datetime.now()
         dtString = now.strftime('%H:%M:%S')
-        if text=="Unknown":
-            f.writelines(f'Unknown,{dtString},{confidence}\n')
+        if text=="Unknown": # and confidence<75
+            # f.writelines(f'Unknown,{dtString},{confidence}\n')
+            placeholder=True
+            
         elif text not in nameList:
             f.writelines(f'{text},{dtString},{confidence}\n')
         
