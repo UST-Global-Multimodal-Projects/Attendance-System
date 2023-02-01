@@ -96,20 +96,22 @@ with open(coordinates_file_path, 'w') as coordinates_file:
 
 
 #clearing the Input_Images directory for the next image if dubug flag is set to 0
-# if debug_flag==0:
-#     print("-----------------------------clearing the inputs directory---------------------------------")
-#     dir_path = input_directory_path
+if debug_flag=="0":
+    print("-----------------------------clearing the inputs directory---------------------------------")
+    dir_path = input_directory_path
 
-#     for filename in os.listdir(dir_path):
-#         file_path = os.path.join(dir_path, filename)
-#         try:
-#             if os.path.isfile(file_path) or os.path.islink(file_path):
-#                 os.unlink(file_path)
-#             elif os.path.isdir(file_path):
-#                 shutil.rmtree(file_path)
-#         except Exception as e:
-#             print('Failed to delete %s. Reason: %s' % (file_path, e))
-#     print("-----------------------------cleared the inputs directory---------------------------------")
+    for filename in os.listdir(dir_path):
+        if filename==".placeholder":  #so that the file names .placeholder is not deleted
+            continue
+        file_path = os.path.join(dir_path, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            print('Failed to delete %s. Reason: %s' % (file_path, e))
+    print("-----------------------------cleared the inputs directory---------------------------------")
 
 
 
