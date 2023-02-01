@@ -16,33 +16,7 @@ import glob
 
 def singleImagePipeline(input_image_path,input_directory_path,coordinates_file_path,face_detection_model_path,face_reidentification_model_path,landmark_regression_model_path,face_database_path,face_gallary_crop_flag,debug_flag):
     
-    #crop all images in face database if the face_gallary_crop_flag is set to 1
-    if face_gallary_crop_flag=="1":
-        print("[ INFO ] Cropping each image in the database to increase accuracy")
-        files = os.listdir(face_database_path)
-        counter=0
-        for file in files:
-            counter+=1
-            file_path = os.path.abspath(os.path.join(face_database_path, file))
-            cmd = f'python FaceDetector.py -i "{file_path}" -m "{face_detection_model_path}" -at ssd'
-            p=subprocess.Popen(cmd,shell=True)
-            output, error = p.communicate() 
-            print(output)
-            print(f"error= {error}")
-            print(f"====================Cropped image {counter} from the face database=====================")
-
-            #this module stores the cropped images in the face gallery
-            obj=ROISaver(face_database_path,file_path,coordinates_file_path)
-            obj.databaseCrop()
-
-            #clear the coordinates file after each use
-            with open(coordinates_file_path, 'w') as coordinates_file:
-                coordinates_file.truncate()
-
-
-
-
-
+    
     #run face detection
     print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++face detection module++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
     cmd = f'python FaceDetector.py -i "{input_image_path}" -m "{face_detection_model_path}" -at ssd'
@@ -126,7 +100,33 @@ def main():
     face_gallary_crop_flag=os.environ['face_gallary_crop_flag']
     debug_flag=os.environ['debug_flag']
 
+    #crop all images in face database if the face_gallary_crop_flag is set to 1
+    if face_gallary_crop_flag=="1":
+        print("[ INFO ] Cropping each image in the database to increase accuracy")
+        files = os.listdir(face_database_path)
+        counter=0
+        for file in files:
+            counter+=1
+            file_path = os.path.abspath(os.path.join(face_database_path, file))
+            cmd = f'python FaceDetector.py -i "{file_path}" -m "{face_detection_model_path}" -at ssd'
+            p=subprocess.Popen(cmd,shell=True)
+            output, error = p.communicate() 
+            print(output)
+            print(f"error= {error}")
+            print(f"====================Cropped image {counter} from the face database=====================")
+
+            #this module stores the cropped images in the face gallery
+            obj=ROISaver(face_database_path,file_path,coordinates_file_path)
+            obj.databaseCrop()
+
+            #clear the coordinates file after each use
+            with open(coordinates_file_path, 'w') as coordinates_file:
+                coordinates_file.truncate()
+
+
+    #call the attendance function for one image
     singleImagePipeline(input_image_path,input_directory_path,coordinates_file_path,face_detection_model_path,face_reidentification_model_path,landmark_regression_model_path,face_database_path,face_gallary_crop_flag,debug_flag)
+    
 
 
 
