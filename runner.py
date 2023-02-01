@@ -90,7 +90,7 @@ def singleImagePipeline(input_image_path,input_directory_path,coordinates_file_p
 def main():
     load_dotenv()
 
-    input_image_path = os.environ['input_image_path']
+
     input_directory_path=os.environ['input_directory_path']
     coordinates_file_path=os.environ['coordinates_file_path']
     face_detection_model_path=os.environ['face_detection_model_path']
@@ -99,6 +99,7 @@ def main():
     face_database_path=os.environ['face_database_path']
     face_gallary_crop_flag=os.environ['face_gallary_crop_flag']
     debug_flag=os.environ['debug_flag']
+    group_images_directory=os.environ['group_images_directory']
 
     #crop all images in face database if the face_gallary_crop_flag is set to 1
     if face_gallary_crop_flag=="1":
@@ -124,9 +125,11 @@ def main():
                 coordinates_file.truncate()
 
 
-    #call the attendance function for one image
-    singleImagePipeline(input_image_path,input_directory_path,coordinates_file_path,face_detection_model_path,face_reidentification_model_path,landmark_regression_model_path,face_database_path,face_gallary_crop_flag,debug_flag)
-    
+    for filename in os.listdir(group_images_directory):
+        file_path = os.path.join(group_images_directory, filename)
+        #call the attendance function for one image
+        singleImagePipeline(file_path,input_directory_path,coordinates_file_path,face_detection_model_path,face_reidentification_model_path,landmark_regression_model_path,face_database_path,face_gallary_crop_flag,debug_flag)
+
 
 
 
