@@ -63,6 +63,8 @@ python3 runner.py
         - ```c_<name of the person>-<number of images with starting index 0>```
         -  example : c_aditya-0.jpg, c_aditya-1.jpg, c_atharva-0.jpg
     - for manually crop
-- The images have to very tighty croped for the face recognition module produce accurate results
-- Manually cropping each image would be a tedious job, therefore we have built an automatic cropping utility that crops all the images with the prefix ```c_``` automatically
-- You can name the images in the face Database without the ```c_``` prefix if you don't want the automatic cropping utility to crop the image, but it is recommended to use the cropping tool as it tighty crops the images which is cruicial for maximum accuracy
+         - ```<name of the person>-<number of images with starting index 0>```
+         -  example : aditya-0.jpg, aditya-1.jpg, atharva-0.jpg
+- The images have to tightly croped for the face recognition module produce accurate results
+- Manually cropping each image would be a tedious job, therefore we have built an automatic cropping utility that crops all the images with the prefix ```c_``` 
+- You can name the images in the face Database without the ```c_``` prefix if you don't want the automatic cropping utility to crop the image, but it is recommended to use the cropping tool as it tightly crops the images which is cruicial for maximum accuracy
