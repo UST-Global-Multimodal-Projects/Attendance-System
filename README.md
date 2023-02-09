@@ -230,7 +230,11 @@ The c_ is used to crop the face of the person from the image as required by the 
 For naming the single registered image the only change is we mention 0 at the place of <number of image>
 
 ### Accuracy Metrics 
+The Results for the images can be tabulated as follows:
 
-For the following images 
+Outcomes Format:Label Name,Time of Attendance,Accuracy of Detection
 
+![ust_result_sheet_resizd](https://user-images.githubusercontent.com/89915132/217735246-0893d4d0-b99b-4092-b6f7-80167aff3f17.jpg)
+
+### The model gives an accuracy of more than 85% for faces present in more than 1 group image.
 
